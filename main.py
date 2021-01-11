@@ -69,13 +69,13 @@ class Example(tk.Frame):
         
         print_body = self.canvas.create_rectangle(0, 20, 150, 60, fill="#3f3f3f", outline = '#3f3f3f', tags = 'token')
         print_head = self.canvas.create_rectangle(0, 0, 150, 20, fill="#9d353f", outline = '#9d353f', tags = 'token')
-        print_title = self.canvas.create_text(20,10,fill="white", text="Timer")
-        print_seconds_subtitle = self.canvas.create_text(30,50,fill="white", text="Seconds")
+        print_title = self.canvas.create_text(20,10,fill="white", text="Print")
+        print_seconds_subtitle = self.canvas.create_text(30,50,fill="white", text="String")
         self.print_entry = tk.Entry(width=15, bg="#595959", bd=0, insertbackground="white", fg="white", text="1")
         print_entry_canvas = self.canvas.create_window(100, 50, window=self.print_entry)
         print_input = self.canvas.create_circle(0, 50, 4, fill="#cc7f33", outline="#cc7f33")
         print_output = self.canvas.create_circle(150, 30, 4, fill="#cc3333", outline="#cc3333")
-        print_ends_subheading = self.canvas.create_text(110,30,fill="white", text="Timer Ends")
+        print_ends_subheading = self.canvas.create_text(110,30,fill="white", text="Output")
 
         _tokens = [print_title, print_body, print_head, print_seconds_subtitle, print_entry_canvas, print_input, print_output, print_ends_subheading]
 
@@ -116,13 +116,12 @@ class Example(tk.Frame):
         delta_y = event.y - self._drag_data["y"]
         item = self._drag_data["item"]
         # move the object the appropriate amount
-        self.canvas.move(item, delta_x, delta_y)
-        for t in self._rects[item]:
+        for t in [item] + self._rects[item]:
             self.canvas.move(t, delta_x, delta_y)
-        
-        for p in self._rects[item]:
-            self.canvas.move(t, delta_x, delta_y)
-        
+
+        # record the new position
+        self._drag_data["x"] = event.x
+        self._drag_data["y"] = event.y
 
         # record the new position
         self._drag_data["x"] = event.x
